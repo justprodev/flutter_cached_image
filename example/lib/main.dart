@@ -2,6 +2,8 @@ import 'package:cached_image/cached_image.dart';
 import 'package:example/view/demo_images_feed_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,9 +23,18 @@ class MyApp extends StatelessWidget {
       title: 'Demo images feed',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        useMaterial3: false,
       ),
-      home: const DemoImagesFeedView(),
+      home: Scaffold(
+        body: const DemoImagesFeedView(),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.grey,
+          onPressed: () {
+            launchUrlString('https://github.com/justprodev/flutter_cached_image/blob/main/example/lib/view/demo_images_feed_view.dart');
+          },
+          child: const Icon(Icons.code),
+        ),
+      ),
     );
   }
 }
