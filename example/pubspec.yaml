@@ -1,0 +1,23 @@
+name: example
+description: "Example app for cached_image package"
+publish_to: 'none'
+url: https://github.com/justprodev/flutter_cached_image
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.4.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cached_image:
+    path: ../../flutter_cached_image
+  flutter_animate: ^4.5.0
+
+flutter:
+  uses-material-design: true
+
+dev_dependencies:
+  flutter_lints:
