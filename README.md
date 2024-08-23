@@ -4,6 +4,14 @@ Just to preconfigure [CachedNetworkImage](https://pub.dev/packages/cached_networ
 
 # Usage
 
+Add to `pubspec.yaml` (main branch is controlled to contain only production-ready code)
+
+```yaml
+  cached_image:
+    git:
+      url: https://github.com/justprodev/flutter_cached_image.git
+```
+
 ```dart
 CachedImage.image(
   'https://picsum.photos/seed/100/300/200',
