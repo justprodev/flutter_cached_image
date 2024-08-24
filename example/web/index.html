@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!--
-      If you are serving your web app in a path other than the root, change the
-      href value below to reflect the base path you are serving from.
-
-      The path provided below has to start and end with a slash "/" in order for
-      it to work correctly.
-
-      For more details:
-      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-      This is a placeholder for base href that will be replaced by the value of
-      the `--base-href` argument provided to `flutter build`.
-    -->
     <base href="$FLUTTER_BASE_HREF">
 
-    <meta charset="UTF-8">
-    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-    <meta name="description" content="Example app for cached_image package">
-    <meta property="og:url" content="https://github.com/justprodev/flutter_cached_image">
+    <!-- HTML Meta Tags -->
+    <title>Flutter example for cached_image package</title>
+    <meta name="description" content="Based on https://github.com/justprodev/flutter_cached_image"/>
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Flutter example for cached_image package"/>
+    <meta itemprop="description" content="Flutter example for cached_image package"/>
+    <meta itemprop="image" content="https://justprodev.com/demo/cached_image/card.jpg"/>
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://justprodev.com/demo/cached_image/index.html"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Flutter example for cached_image package"/>
+    <meta property="og:description" content="Based on https://github.com/justprodev/flutter_cached_image"/>
+    <meta property="og:image" content="https://justprodev.com/demo/cached_image/card.jpg"/>
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="https://justprodev.com/demo/cached_image/card.jpg"/>
+    <meta name="twitter:title" content="Flutter example for cached_image package"/>
+    <meta name="twitter:description" content="Based on https://github.com/justprodev/flutter_cached_image"/>
+    <meta name="twitter:image" content="https://justprodev.com/demo/cached_image/card.jpg"/>
+
+    <!-- Meta Tags Generated via https://heymeta.com -->
+
+    <meta name="description" content="Flutter example for cached_image package">
+    <meta property="og:url" content="https://justprodev.com/demo/cached_image/index.html">
 
     <!-- iOS meta tags & icons -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -30,10 +39,14 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png"/>
 
-    <title>example</title>
+    <title>Flutter example for cached_image package</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<script src="flutter_bootstrap.js" async></script>
+    <div id="loading">
+        <img src="icons/Icon-512.png" alt="Loading indicator..." />
+    </div>
+    <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

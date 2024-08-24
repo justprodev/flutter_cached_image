@@ -2,6 +2,8 @@ name: cached_image
 description: Convenient wrapper over flutter_cached_network_image with some additional features
 publish_to: none
 
+version: 3.4.1
+
 environment:
   sdk: ^3.4.0
 
@@ -11,8 +13,8 @@ dependencies:
 
   collection:
 
-  flutter_cache_manager: ^3.3.1
-  cached_network_image: ^3.3.1
+  flutter_cache_manager: ^3.4.1
+  cached_network_image: ^3.4.1
 
 flutter:
   assets:
