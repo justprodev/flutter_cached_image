@@ -2,6 +2,8 @@
 
 Just to preconfigure [CachedNetworkImage](https://pub.dev/packages/cached_network_image).
 
+[Online demo](https://justprodev.com/demo/cached_image/index.html)
+
 # Usage
 
 Add to `pubspec.yaml` (main branch is controlled to contain only production-ready code)
@@ -75,5 +77,3 @@ configureCachedImage() {
 ```
 
 See [example](/example/) for more details.
-
-[Online demo](https://justprodev.com/demo/cached_image/index.html)
