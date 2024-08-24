@@ -1,5 +1,5 @@
 name: example
-description: "Example app for cached_image package"
+description: "Flutter example app for cached_image package"
 publish_to: 'none'
 url: https://github.com/justprodev/flutter_cached_image
 
