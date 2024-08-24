@@ -39,6 +39,7 @@ class DemoImagesFeedView extends StatelessWidget {
               mainAxisSpacing: spacing,
               crossAxisSpacing: spacing,
               childAspectRatio: defaultImageWidth / defaultImageHeight,
+              mainAxisExtent: imageHeight,
             ),
             itemBuilder: (_, index) {
               return CachedImage.image(
@@ -50,6 +51,10 @@ class DemoImagesFeedView extends StatelessWidget {
               );
             },
             itemCount: imageCount,
+            // two screens of images
+            cacheExtent: media.size.height * 2,
+            addRepaintBoundaries: false,
+            addAutomaticKeepAlives: false,
           ),
         );
       },

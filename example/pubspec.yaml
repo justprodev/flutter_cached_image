@@ -3,7 +3,7 @@ description: "Example app for cached_image package"
 publish_to: 'none'
 url: https://github.com/justprodev/flutter_cached_image
 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.4.0
