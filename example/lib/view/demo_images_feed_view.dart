@@ -2,7 +2,10 @@
 
 import 'package:cached_image/cached_image.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
+const fullImageWidth = 1920;
+const fullImageHeight = fullImageWidth * defaultImageHeight / defaultImageWidth;
 const defaultImageWidth = 300;
 const defaultImageHeight = 200;
 const spacing = 8.0;
@@ -42,12 +45,17 @@ class DemoImagesFeedView extends StatelessWidget {
               mainAxisExtent: imageHeight,
             ),
             itemBuilder: (_, index) {
-              return CachedImage.image(
-                'https://picsum.photos/seed/$index/$defaultImageWidth/$defaultImageHeight',
-                width: imageWidth,
-                height: imageHeight,
-                fit: BoxFit.cover,
-                borderRadius: const BorderRadius.all(Radius.circular(24)),
+              return InkWell(
+                onTap: () => launchUrlString(
+                  'https://picsum.photos/seed/$index/$fullImageWidth/${fullImageHeight.ceil()}',
+                ),
+                child: CachedImage.image(
+                  'https://picsum.photos/seed/$index/$defaultImageWidth/$defaultImageHeight',
+                  width: imageWidth,
+                  height: imageHeight,
+                  fit: BoxFit.cover,
+                  borderRadius: const BorderRadius.all(Radius.circular(24)),
+                ),
               );
             },
             itemCount: imageCount,
