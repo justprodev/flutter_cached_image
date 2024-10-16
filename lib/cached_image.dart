@@ -3,13 +3,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'src/cached_network_provider_with_limits.dart';
 import 'src/model/blank_asset.dart';
 import 'src/model/default_handlers.dart';
+import 'src/model/image_limits.dart';
 import 'src/model/types.dart';
+
+// ignore: depend_on_referenced_packages, we know that cached_network_image uses octo_image
+import 'package:octo_image/octo_image.dart';
 
 export 'package:flutter_cache_manager/flutter_cache_manager.dart' show FileInfo;
 export 'src/model/types.dart';
 export 'src/model/default_handlers.dart';
+export 'src/model/image_limits.dart';
 
 /// cache for images
 class CachedImage {
@@ -18,20 +24,29 @@ class CachedImage {
   static ExtendedPlaceholderWidgetBuilder _defaultPlaceholder = defaultPlaceholder;
   static ExtendedErrorWidgetBuilder _defaultErrorWidget = defaultErrorWidget;
 
+  /// Set [ImageLimits] to reduce memory usage when rendering images.
+  static ImageLimits? defaultImageLimits;
+
   /// just wrapper over [cached_network_image]
   /// Now, it just handles blank urls to avoid network errors
+  ///
   /// [errorListener] - Listener to be called when images fails to load.
+  ///
+  /// [imageLimits] - If not null and image size > [ImageLimits.limitBytes] then image will be resized
+  /// Default value is [defaultImageLimits]
   static ImageProvider provider(
     String? url, {
     Map<String, String>? httpHeaders,
     Function(Object)? errorListener,
+    ImageLimits? imageLimits,
   }) {
     if (url != null && url.isNotEmpty) {
-      return CachedNetworkImageProvider(
+      return CachedNetworkImageProviderWithLimits(
         cacheManager: _cacheManager,
         headers: httpHeaders,
         errorListener: errorListener ?? _defaultErrorListener,
         url,
+        imageLimits: imageLimits ?? defaultImageLimits,
       );
     } else {
       return blankAsset;
@@ -75,10 +90,12 @@ class CachedImage {
       }
     }
 
+    final imageProvider = provider(url, httpHeaders: httpHeaders, errorListener: errorListener);
+
     // if borderRadius is provided, then wrap image with ClipRRect
-    ImageWidgetBuilder? imageBuilder;
+    WidgetBuilder? imageBuilder;
     if (borderRadius != null) {
-      imageBuilder = (context, imageProvider) {
+      imageBuilder = (context) {
         return ClipRRect(
           clipBehavior: Clip.hardEdge,
           borderRadius: borderRadius,
@@ -98,22 +115,19 @@ class CachedImage {
       fadeOutDuration = Duration.zero;
     }
 
-    return CachedNetworkImage(
-      cacheManager: _cacheManager,
-      alignment: alignment,
+    return OctoImage(
       key: key,
-      imageUrl: url,
+      image: imageProvider,
+      imageBuilder: imageBuilder != null ? (context, _) => imageBuilder!(context) : null,
+      placeholderBuilder: placeholder != null ? (context) => placeholder!(context, url) : null,
+      errorBuilder: (context, error, _) => errorWidget!(context, url, error),
+      fadeOutDuration: fadeOutDuration,
+      fadeInDuration: fadeInDuration,
       width: width,
       height: height,
       fit: fit,
-      httpHeaders: httpHeaders,
-      placeholder: placeholder,
-      imageBuilder: imageBuilder,
-      useOldImageOnUrlChange: true,
-      errorWidget: errorWidget,
-      errorListener: errorListener ?? defaultErrorListener,
-      fadeInDuration: fadeInDuration,
-      fadeOutDuration: fadeOutDuration,
+      alignment: alignment,
+      gaplessPlayback: true,
     );
   }
 
