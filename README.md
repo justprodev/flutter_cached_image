@@ -1,4 +1,4 @@
-![test on release](https://github.com/justprodev/flutter_cached_image/actions/workflows/release.yaml/badge.svg)
+[![test](https://github.com/justprodev/flutter_cached_image/actions/workflows/pull_request.yaml/badge.svg)](https://github.com/justprodev/flutter_cached_image/actions/workflows/pull_request.yaml)
 [![codecov](https://codecov.io/gh/justprodev/flutter_cached_image/graph/badge.svg?token=2QHJCEYEBU)](https://codecov.io/gh/justprodev/flutter_cached_image)
 
 # Motivation
