@@ -1,12 +1,13 @@
 // Created by alex@justprodev.com on 07.07.2024.
 
+import 'dart:typed_data';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'src/cached_network_provider_with_limits.dart';
+import 'src/image_provider_with_limits.dart';
 import 'src/model/blank_asset.dart';
 import 'src/model/default_handlers.dart';
-import 'src/model/image_limits.dart';
 import 'src/model/types.dart';
 
 // ignore: depend_on_referenced_packages, we know that cached_network_image uses octo_image
@@ -15,7 +16,6 @@ import 'package:octo_image/octo_image.dart';
 export 'package:flutter_cache_manager/flutter_cache_manager.dart' show FileInfo;
 export 'src/model/types.dart';
 export 'src/model/default_handlers.dart';
-export 'src/model/image_limits.dart';
 
 /// cache for images
 class CachedImage {
@@ -41,15 +41,14 @@ class CachedImage {
     ImageLimits? imageLimits,
   }) {
     if (url != null && url.isNotEmpty) {
-      return CachedNetworkImageProviderWithLimits(
+      return CachedNetworkImageProvider(
         cacheManager: _cacheManager,
         headers: httpHeaders,
         errorListener: errorListener ?? _defaultErrorListener,
         url,
-        imageLimits: imageLimits ?? defaultImageLimits,
-      );
+      ).withLimits(imageLimits ?? defaultImageLimits);
     } else {
-      return blankAsset;
+      return MemoryImage(Uint8List.fromList(kTransparentImage));
     }
   }
 
