@@ -16,6 +16,7 @@ import 'package:octo_image/octo_image.dart';
 export 'package:flutter_cache_manager/flutter_cache_manager.dart' show FileInfo;
 export 'src/model/types.dart';
 export 'src/model/default_handlers.dart';
+export 'src/image_provider_with_limits.dart' show ImageLimits;
 
 /// cache for images
 class CachedImage {
