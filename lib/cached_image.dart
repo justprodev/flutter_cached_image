@@ -69,6 +69,7 @@ class CachedImage {
     LoadingErrorWidgetBuilder? errorWidget,
     bool animation = false,
     Alignment alignment = Alignment.center,
+    ImageLimits? imageLimits,
   }) {
     // if width and height are provided, then we can use default placeholder and error widget
     if (width != null && height != null) {
@@ -90,7 +91,12 @@ class CachedImage {
       }
     }
 
-    final imageProvider = provider(url, httpHeaders: httpHeaders, errorListener: errorListener);
+    final imageProvider = provider(
+      url,
+      httpHeaders: httpHeaders,
+      errorListener: errorListener,
+      imageLimits: imageLimits,
+    );
 
     // if borderRadius is provided, then wrap image with ClipRRect
     WidgetBuilder? imageBuilder;

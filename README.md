@@ -3,18 +3,20 @@
 
 # Motivation
 
-Just to preconfigure [CachedNetworkImage](https://pub.dev/packages/cached_network_image).
+1. Preconfigure [CachedNetworkImage](https://pub.dev/packages/cached_network_image).
+2. Ability to using [memory limits](/lib/src/image_provider_with_limits.dart) for using in mobile for a cases when backend sends big images sometimes.
 
 [Online demo](https://justprodev.com/demo/cached_image/index.html)
 
 # Usage
 
-Add to `pubspec.yaml` (main branch is controlled to contain only production-ready code)
+Add to `pubspec.yaml`:
 
 ```yaml
   cached_image:
     git:
       url: https://github.com/justprodev/flutter_cached_image.git
+      tag: 3.4.2-rc.05 # control the version, please - check releases
 ```
 
 ```dart
