@@ -1,3 +1,6 @@
+[![Flutter Test in Pull Requests](https://github.com/justprodev/flutter_cached_image/actions/workflows/pull_request.yaml/badge.svg)](https://github.com/justprodev/flutter_cached_image/actions/workflows/pull_request.yaml)
+[![codecov](https://codecov.io/gh/justprodev/flutter_cached_image/graph/badge.svg?token=2QHJCEYEBU)](https://codecov.io/gh/justprodev/flutter_cached_image)
+
 # Motivation
 
 Just to preconfigure [CachedNetworkImage](https://pub.dev/packages/cached_network_image).
