@@ -66,13 +66,14 @@ class ImageProviderWithLimits<T extends Object> extends ImageProvider<T> {
           int currentTargetWidth = parentTargetSize?.width ?? intrinsicWidth;
           int currentTargetHeight = parentTargetSize?.height ?? intrinsicHeight;
 
+          // scale down to fit width or height
           if (currentTargetWidth > imageLimits.targetWidthOrHeight) {
             return TargetImageSize(width: imageLimits.targetWidthOrHeight);
           } else if (currentTargetHeight > imageLimits.targetWidthOrHeight) {
             return TargetImageSize(height: imageLimits.targetWidthOrHeight);
           }
 
-          return getTargetSize!(currentTargetWidth, currentTargetWidth);
+          return TargetImageSize(width: currentTargetWidth, height: currentTargetHeight);
         });
       }
 

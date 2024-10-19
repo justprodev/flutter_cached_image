@@ -15,7 +15,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.4.1-rc.03"
+    version: "3.4.1-rc.05"
   cached_network_image:
     dependency: transitive
     description:
