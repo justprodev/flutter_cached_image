@@ -26,6 +26,8 @@ CachedImage.image(
   height: 200,
   fit: BoxFit.cover,
   borderRadius: const BorderRadius.all(Radius.circular(24)),
+  // If some image size > [limitBytes] then downscale
+  imageLimits: const ImageLimits(limitBytes: 1024 * 1024, targetWidthOrHeight: 1024),
 );
 ```
 
