@@ -170,7 +170,7 @@ void main() {
 extension on List<int> {
   Future<List<int>> resize(int targetWidth, [int? targetHeight]) async {
     final pngCodec = await instantiateImageCodec(
-      Uint8List.fromList(kTransparentImage),
+      Uint8List.fromList(this),
       targetWidth: targetWidth,
       targetHeight: targetHeight,
       allowUpscaling: true,
