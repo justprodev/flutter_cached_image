@@ -60,7 +60,7 @@ class ImageProviderWithLimits<T extends Object> extends ImageProvider<T> {
   ImageStreamCompleter loadImage(T key, ImageDecoderCallback decode) {
     Future<Codec> wrapper(ImmutableBuffer buffer, {TargetImageSizeCallback? getTargetSize}) async {
       if (buffer.length > imageLimits.limitBytes) {
-        return instantiateImageCodecWithSize(buffer, getTargetSize: (int intrinsicWidth, int intrinsicHeight) {
+        return decode(buffer, getTargetSize: (int intrinsicWidth, int intrinsicHeight) {
           final parentTargetSize = getTargetSize?.call(intrinsicWidth, intrinsicHeight);
 
           int currentTargetWidth = parentTargetSize?.width ?? intrinsicWidth;
