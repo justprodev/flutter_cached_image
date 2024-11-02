@@ -1,25 +1,26 @@
 // Created by alex@justprodev.com on 16.10.2024.
 
 import 'dart:ui';
-
 import 'package:flutter/painting.dart';
 
-extension ImageProviderWithLimitsExt<T extends Object> on ImageProvider<T> {
+extension ImageProviderWithLimitsExt on ImageProvider {
   /// Returns a [ImageProviderWithLimits] that resizes image if needed in accordance with [ImageLimits]
   ///
   /// If [imageLimits] is null, returns the original [ImageProvider]
-  ImageProvider<T> withLimits(ImageLimits? imageLimits) {
+  ImageProvider withLimits(ImageLimits? imageLimits) {
     if (imageLimits == null) return this;
 
-    return ImageProviderWithLimits<T>(this, imageLimits);
+    return ImageProviderWithLimits(this, imageLimits);
   }
 }
 
-/// Settings to reduce memory usage when rendering images.
+/// Settings to reduce the memory footprint of [ImageCache].
+//
+/// If some image file has size > [limitBytes] then image should be resized.
 ///
-/// If some image file has size > [limitBytes] then image should be resized
+/// Value of [targetWidthOrHeight] used depending on which side of image is bigger than [targetWidthOrHeight].
+/// Width should be checked first.
 ///
-/// value of [targetWidthOrHeight] used depending on which side of image is bigger
 ///
 /// Example:
 ///
@@ -39,17 +40,24 @@ class ImageLimits {
     required this.limitBytes,
     required this.targetWidthOrHeight,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ImageLimits && other.limitBytes == limitBytes && other.targetWidthOrHeight == targetWidthOrHeight;
+  }
+
+  @override
+  int get hashCode => limitBytes.hashCode ^ targetWidthOrHeight.hashCode;
 }
 
 /// Wrapper over [ImageProvider] that resizes image ONLY if [ImageLimits.limitBytes] is exceeded.
 ///
 /// Otherwise, the process of loading the image will be the same as for the original [ImageProvider].
-///
-/// Note: Because we doing "full delegation", the [ImageCache] will treat this provider as delegated image provider.
-/// This means that object without limits and object with limits will be treated as same objects.
-class ImageProviderWithLimits<T extends Object> extends ImageProvider<T> {
+class ImageProviderWithLimits extends ImageProvider<ImageLimitsKey> {
   final ImageLimits imageLimits;
-  final ImageProvider<T> delegatedImageProvider;
+  final ImageProvider delegatedImageProvider;
 
   const ImageProviderWithLimits(
     this.delegatedImageProvider,
@@ -57,10 +65,10 @@ class ImageProviderWithLimits<T extends Object> extends ImageProvider<T> {
   );
 
   @override
-  ImageStreamCompleter loadImage(T key, ImageDecoderCallback decode) {
-    Future<Codec> wrapper(ImmutableBuffer buffer, {TargetImageSizeCallback? getTargetSize}) async {
+  ImageStreamCompleter loadImage(ImageLimitsKey key, ImageDecoderCallback decode) {
+    Future<Codec> wrapper(ImmutableBuffer buffer, {TargetImageSizeCallback? getTargetSize}) {
       if (buffer.length > imageLimits.limitBytes) {
-        return instantiateImageCodecWithSize(buffer, getTargetSize: (int intrinsicWidth, int intrinsicHeight) {
+        return decode(buffer, getTargetSize: (int intrinsicWidth, int intrinsicHeight) {
           final parentTargetSize = getTargetSize?.call(intrinsicWidth, intrinsicHeight);
 
           int currentTargetWidth = parentTargetSize?.width ?? intrinsicWidth;
@@ -80,19 +88,36 @@ class ImageProviderWithLimits<T extends Object> extends ImageProvider<T> {
       return decode(buffer, getTargetSize: getTargetSize);
     }
 
-    return delegatedImageProvider.loadImage(key, wrapper);
+    return delegatedImageProvider.loadImage(key._delegatedProviderKey, wrapper);
   }
 
   @override
-  Future<T> obtainKey(ImageConfiguration configuration) {
-    return delegatedImageProvider.obtainKey(configuration);
+  Future<ImageLimitsKey> obtainKey(ImageConfiguration configuration) {
+    // note [SynchronousFuture.then] will also return a synchronous future.
+    return delegatedImageProvider.obtainKey(configuration).then((key) => ImageLimitsKey._(key, imageLimits));
   }
+}
+
+/// Key used internally by [ImageProviderWithLimits].
+///
+/// This is used to identify the precise resource in the [imageCache].
+///
+/// So, it like [ResizeImageKey]
+class ImageLimitsKey {
+  final Object _delegatedProviderKey;
+  final ImageLimits _imageLimits;
+
+  const ImageLimitsKey._(this._delegatedProviderKey, this._imageLimits);
 
   @override
   bool operator ==(Object other) {
-    return delegatedImageProvider == other;
+    if (identical(this, other)) return true;
+
+    return other is ImageLimitsKey &&
+        other._delegatedProviderKey == _delegatedProviderKey &&
+        other._imageLimits == _imageLimits;
   }
 
   @override
-  int get hashCode => delegatedImageProvider.hashCode;
+  int get hashCode => Object.hash(_delegatedProviderKey, _imageLimits);
 }
