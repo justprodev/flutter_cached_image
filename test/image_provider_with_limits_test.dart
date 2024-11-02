@@ -118,7 +118,7 @@ void main() {
       () async {
         // upscale 1x1 image to 20x20
         final kBigImage = await kTransparentImage.resize(20, 20);
-        final imageLimits = ImageLimits(limitBytes: 0, targetWidthOrHeight: 1);
+        const imageLimits = ImageLimits(limitBytes: 0, targetWidthOrHeight: 1);
 
         final imageProvider = ResizeImage(
           MemoryImage(Uint8List.fromList(kBigImage)),
@@ -139,7 +139,7 @@ void main() {
       () async {
         // upscale 1x1 image to 2x4
         final kTransparentDoubleHeightImage = await kTransparentImage.resize(2, 4);
-        final imageLimits = ImageLimits(limitBytes: 0, targetWidthOrHeight: 2);
+        const imageLimits = ImageLimits(limitBytes: 0, targetWidthOrHeight: 2);
 
         final imageProvider = MemoryImage(Uint8List.fromList(kTransparentDoubleHeightImage)).withLimits(imageLimits);
         final resultImageInfo = await imageProvider.invoke();
