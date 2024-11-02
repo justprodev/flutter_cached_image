@@ -101,7 +101,7 @@ void main() {
       () async {
         final kBigImage = await kTransparentImage.resize(10);
         // limit will be reached, but image is already smaller than target
-        final imageLimits = ImageLimits(limitBytes: 0, targetWidthOrHeight: 20);
+        const imageLimits = ImageLimits(limitBytes: 0, targetWidthOrHeight: 20);
 
         final imageProvider = MemoryImage(Uint8List.fromList(kBigImage)).withLimits(imageLimits);
         final resultImageInfo = await imageProvider.invoke();
@@ -153,14 +153,30 @@ void main() {
 
     test(
       'image cache hit',
-          () async {
-        final imageLimits = ImageLimits(limitBytes: 1000, targetWidthOrHeight: 1000);
+      () async {
+        final originalProvider = MemoryImage(Uint8List.fromList(kTransparentImage));
 
-        final imageProvider = MemoryImage(Uint8List.fromList(kTransparentImage)).withLimits(imageLimits);
-        await imageProvider.invoke();
+        const imageLimits1 = ImageLimits(limitBytes: 1000, targetWidthOrHeight: 1000);
+        final imageProvider1 = originalProvider.withLimits(imageLimits1);
+        await imageProvider1.invoke();
 
-        //
-        expect(PaintingBinding.instance.imageCache.containsKey(imageProvider), true);
+        // ignore: prefer_const_constructors - especially create different object
+        final imageLimits2 = ImageLimits(limitBytes: 1000, targetWidthOrHeight: 1000);
+        final imageProvider2 = originalProvider.withLimits(imageLimits2);
+        final key2 = await imageProvider2.obtainKey(ImageConfiguration.empty);
+
+        expect(
+          PaintingBinding.instance.imageCache.containsKey(key2),
+          true,
+          reason: 'key2 should be in cache',
+        );
+
+        final originalKey = await originalProvider.obtainKey(ImageConfiguration.empty);
+        expect(
+          PaintingBinding.instance.imageCache.containsKey(originalKey),
+          false,
+          reason: 'originalKey should not be in cache',
+        );
       },
       skip: isBrowser,
     );
