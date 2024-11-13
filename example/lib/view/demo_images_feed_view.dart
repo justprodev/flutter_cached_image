@@ -20,11 +20,11 @@ class DemoImagesFeedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context);
+    final screenSize = MediaQuery.sizeOf(context);
 
-    final crossAxisCount = (media.size.width / (defaultImageWidth + spacing * 2)).ceil();
+    final crossAxisCount = (screenSize.width / (defaultImageWidth + spacing * 2)).ceil();
 
-    final imageWidth = (media.size.width - (crossAxisCount + 1) * spacing) / crossAxisCount;
+    final imageWidth = (screenSize.width - (crossAxisCount + 1) * spacing) / crossAxisCount;
     final imageHeight = imageWidth * defaultImageHeight / defaultImageWidth;
 
     return StatefulBuilder(
@@ -60,7 +60,7 @@ class DemoImagesFeedView extends StatelessWidget {
             },
             itemCount: imageCount,
             // two screens of images
-            cacheExtent: media.size.height * 2,
+            cacheExtent: screenSize.height * 2,
             addRepaintBoundaries: false,
             addAutomaticKeepAlives: false,
           ),
